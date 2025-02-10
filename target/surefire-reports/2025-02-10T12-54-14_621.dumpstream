@@ -1,4 +1,4 @@
-# Created at 2025-02-10T11:59:04.909
+# Created at 2025-02-10T12:54:14.956
 Boot Manifest-JAR contains absolute paths in classpath 'D:\JavaMaven\SmartHome\target\test-classes'
 Hint: <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
 'other' has different root

@@ -5,8 +5,15 @@ abstract class SmartDevice {
     protected boolean powerStatus;
 
     public SmartDevice(String name) {
-        this.name = name;
-        this.powerStatus = false; // Default: Off
+        try{
+            if (name == null || name.isEmpty()) {
+                throw new IllegalArgumentException("Device name cannot be null or empty.");
+            }
+            this.name = name;
+            this.powerStatus = false; // Default: Off
+        }catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 
     // Encapsulation: Control power status
@@ -30,15 +37,28 @@ class Light extends SmartDevice {
 
     public Light(String name, int brightness) {
         super(name);
-        this.brightness = brightness;
+        try{
+            if (brightness < 0 || brightness > 100) {
+                throw new IllegalArgumentException("Brightness must be between 0 and 100.");
+            }
+            this.brightness = brightness;
+        }catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 
     public void setBrightness(int level) {
-        if (powerStatus) {
+        try {
+            if (!powerStatus) {
+                throw new IllegalStateException(name + " is OFF. Turn it on first.");
+            }
+            if (level < 0 || level > 100) {
+                throw new IllegalArgumentException("Brightness must be between 0 and 100.");
+            }
             brightness = level;
             System.out.println(name + " brightness set to " + brightness + "%.");
-        } else {
-            System.out.println(name + " is OFF. Turn it on first.");
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
@@ -55,15 +75,28 @@ class Fan extends SmartDevice {
 
     public Fan(String name, int speed) {
         super(name);
-        this.speed = speed;
+        try{
+            if (speed < 0 || speed > 5) {
+                throw new IllegalArgumentException("Speed must be between 0 and 5.");
+            }
+            this.speed = speed;
+        }catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 
     public void setSpeed(int level) {
-        if (powerStatus) {
+        try {
+            if (!powerStatus) {
+                throw new IllegalStateException(name + " is OFF. Turn it on first.");
+            }
+            if (level < 0 || level > 5) {
+                throw new IllegalArgumentException("Speed must be between 0 and 5.");
+            }
             speed = level;
             System.out.println(name + " speed set to level " + speed);
-        } else {
-            System.out.println(name + " is OFF. Turn it on first.");
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
@@ -79,15 +112,28 @@ class SmartTV extends SmartDevice {
 
     public SmartTV(String name, String channel) {
         super(name);
-        this.channel = channel;
+        try{
+            if (channel == null || channel.isEmpty()) {
+                throw new IllegalArgumentException("Channel name cannot be null or empty.");
+            }
+            this.channel = channel;
+        }catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 
     public void changeChannel(String newChannel) {
-        if (powerStatus) {
+        try {
+            if (!powerStatus) {
+                throw new IllegalStateException(name + " is OFF. Turn it on first.");
+            }
+            if (newChannel == null || newChannel.isEmpty()) {
+                throw new IllegalArgumentException("Channel name cannot be null or empty.");
+            }
             channel = newChannel;
             System.out.println(name + " changed to channel: " + channel);
-        } else {
-            System.out.println(name + " is OFF. Turn it on first.");
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
@@ -114,6 +160,7 @@ public class SmartHome {
         bedroomFan.setSpeed(5);
         tv.changeChannel("StarSports");
 
+        
         // Display device statuses
         livingRoomLight.deviceStatus();
         bedroomFan.deviceStatus();
@@ -123,5 +170,13 @@ public class SmartHome {
         livingRoomLight.turnOff();
         bedroomFan.turnOff();
         tv.turnOff();
+
+        // Attempting invalid operations
+        Light invalidLight = new Light("", 500); //Invalid Light object
+        Fan invalidFan = new Fan(null, 100); //Invalid Fan object
+        SmartTV invalidTV = new SmartTV("", null); //Invalid Tv object
+        livingRoomLight.setBrightness(150); // Invalid brightness
+        bedroomFan.setSpeed(7); // Invalid speed
+        tv.changeChannel(""); // Invalid channel
     }
 }
