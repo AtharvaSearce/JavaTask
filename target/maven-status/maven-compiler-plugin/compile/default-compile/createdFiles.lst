@@ -1,0 +1,5 @@
+com\smarthome\Fan.class
+com\smarthome\Light.class
+com\smarthome\SmartTV.class
+com\smarthome\SmartHome.class
+com\smarthome\SmartDevice.class
